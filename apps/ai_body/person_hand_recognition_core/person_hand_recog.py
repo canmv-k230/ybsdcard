@@ -1,6 +1,6 @@
 from apps.ai_body.base_demo_page import BaseDemoPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import apps.ai_body.person_hand_recognition_core.person_hand_recognition as person_hand_recognition
 from media.display import *
 from media.media import *

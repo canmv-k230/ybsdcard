@@ -1,7 +1,7 @@
 from apps.setting.base_setting_page import BaseSettingPage
 import lvgl as lv
 import os
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 
 class LanguageSettingsPage(BaseSettingPage):
     def __init__(self, app, detail_panel, config, text_config):

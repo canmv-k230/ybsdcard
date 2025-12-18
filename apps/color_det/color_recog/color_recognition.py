@@ -7,7 +7,7 @@ from media.media import *
 DISPLAY_WIDTH = 640
 DISPLAY_HEIGHT = 480
 from libs.YbProtocol import YbProtocol
-from yahboom.ybUtils.YbUart import YbUart
+from ybUtils.YbUart import YbUart
 uart = None
 pto = YbProtocol()
 # Import touch sensor module

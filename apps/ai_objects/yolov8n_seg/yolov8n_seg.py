@@ -1,6 +1,6 @@
 from apps.ai_objects.base_demo_page import BaseDemoPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import apps.ai_objects.yolov8n_seg.yolov8n_segment as yolov8n_segment
 from media.display import *
 from media.media import *

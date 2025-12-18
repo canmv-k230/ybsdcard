@@ -1,7 +1,7 @@
 import machine
 import lvgl as lv
 from apps.setting.base_setting_page import BaseSettingPage
-from yahboom.ybUtils.Configuration import Configuration
+from ybUtils.Configuration import Configuration
 class DeviceSettingsPage(BaseSettingPage):
     def __init__(self, app, detail_panel, config, text_config):
         self.text_config = text_config.get_section("Settings")["my_device"]

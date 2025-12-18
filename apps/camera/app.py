@@ -2,11 +2,11 @@ import lvgl as lv
 import os,gc
 import time
 import binascii
-from yahboom.ybMain.base_app import BaseApp
+from ybMain.base_app import BaseApp
 from media.media import *
 from media.display import *
 from machine import TOUCH
-from yahboom.ybUtils.Configuration import Configuration
+from ybUtils.Configuration import Configuration
 
 # Initialize touch sensor on pin 0
 tp = TOUCH(0)

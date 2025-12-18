@@ -1,7 +1,7 @@
 try:
     import YbRequests as requests
 except Exception:    
-    import yahboom.ybUtils.YbRequests as requests
+    import ybUtils.YbRequests as requests
 
 import time
 import json  # 添加json模块导入

@@ -1,9 +1,9 @@
 import lvgl as lv
-from yahboom.ybMain.base_app import BaseApp
+from ybMain.base_app import BaseApp
 import os,time
-from yahboom.ybMain.base_app import BaseApp
-from yahboom.ybUtils.Configuration import Configuration
-from yahboom.ybUtils.modal_dialog import ModalDialog
+from ybMain.base_app import BaseApp
+from ybUtils.Configuration import Configuration
+from ybUtils.modal_dialog import ModalDialog
 
 def get_file_info(file_path):
     try:

@@ -12,7 +12,7 @@ import image
 from machine import TOUCH
 tp = TOUCH(0)
 from libs.YbProtocol import YbProtocol
-from yahboom.ybUtils.YbUart import YbUart
+from ybUtils.YbUart import YbUart
 uart = None
 pto = YbProtocol()
 

@@ -1,6 +1,6 @@
 from apps.graphics_det.base_demo_page import BaseDemoPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import apps.graphics_det.circle_det.circle_detection as circle_detection
 from media.display import *
 from media.media import *

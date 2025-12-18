@@ -1,6 +1,6 @@
 from apps.ai_face.base_demo_page import BaseDemoPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import apps.ai_face.face_recog_register_core.face_registration as face_recog_register
 from media.display import *
 from media.media import *

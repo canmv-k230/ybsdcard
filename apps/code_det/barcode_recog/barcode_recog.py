@@ -1,6 +1,6 @@
 from apps.code_det.base_demo_page import BaseDemoPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import apps.code_det.barcode_recog.barcode_recognition as barcode_recognition
 from media.display import *
 from media.media import *

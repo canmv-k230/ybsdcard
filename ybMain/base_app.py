@@ -1,5 +1,5 @@
 import lvgl as lv
-from yahboom.ybUtils.modal_dialog import ModalDialog
+from ybUtils.modal_dialog import ModalDialog
 import time
 from machine import Timer
 

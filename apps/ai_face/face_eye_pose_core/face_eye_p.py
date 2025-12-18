@@ -1,6 +1,6 @@
 from apps.ai_face.base_demo_page import BaseDemoPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import apps.ai_face.face_eye_pose_core.eye_gaze as face_eye_pose
 from media.display import *
 from media.media import *

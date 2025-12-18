@@ -1,6 +1,6 @@
 from apps.color_det.base_demo_page import BaseDemoPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import apps.color_det.item_count.count as count
 from media.display import *
 from media.media import *

@@ -2,7 +2,7 @@ import lvgl as lv
 import gc
 from media.display import *
 from media.media import *
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import time
 class BaseDemoPage:
     def __init__(self, app, detail_panel, config, text_config):

@@ -1,6 +1,6 @@
 import lvgl as lv
-from yahboom.ybMain.base_app import BaseApp
-from yahboom.ybUtils.Configuration import Configuration
+from ybMain.base_app import BaseApp
+from ybUtils.Configuration import Configuration
 
 
 import sys, os, _thread

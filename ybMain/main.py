@@ -10,18 +10,18 @@ import math,network
 from machine import Timer
 import _thread
 from libs.PipeLine import PipeLine
-#from yahboom.ybUtils.ybImg import *
-from yahboom.ybUtils.Configuration import Configuration
-import yahboom.ybUtils.monitor as monitor
-from yahboom.ybUtils.YbNetwork import YbNetwork
-from yahboom.ybUtils.modal_dialog import ModalDialog
-from yahboom.ybUtils.YbKey import YbKey
-from yahboom.ybUtils.YbBuzzer import YbBuzzer
-from yahboom.ybUtils.YbRGB import YbRGB
-from yahboom.ybUtils.YbUart import YbUart
+#from ybUtils.ybImg import *
+from ybUtils.Configuration import Configuration
+import ybUtils.monitor as monitor
+from ybUtils.YbNetwork import YbNetwork
+from ybUtils.modal_dialog import ModalDialog
+from ybUtils.YbKey import YbKey
+from ybUtils.YbBuzzer import YbBuzzer
+from ybUtils.YbRGB import YbRGB
+from ybUtils.YbUart import YbUart
 # uart = None
 
-from yahboom.ybMain.WelcomeScreen import WelcomeScreen
+from ybMain.WelcomeScreen import WelcomeScreen
 
 import machine
 

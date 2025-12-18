@@ -1,12 +1,12 @@
 import lvgl as lv
-from yahboom.ybMain.base_app import BaseApp
-from yahboom.ybUtils.Configuration import Configuration
+from ybMain.base_app import BaseApp
+from ybUtils.Configuration import Configuration
 
 import sys, os, gc, time, _thread
 
 sys.path.append(os.getcwd())
 
-from yahboom.ybUtils.modal_dialog import ModalDialog
+from ybUtils.modal_dialog import ModalDialog
 
 # 导入所有页面
 from apps.code_det.barcode_recog.barcode_recog import BarRecogPage

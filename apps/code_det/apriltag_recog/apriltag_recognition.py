@@ -11,7 +11,7 @@ from media.media import *
 # AprilTag代码最多支持同时处理6种tag家族
 # 返回的tag标记对象包含其所属家族及在该家族中的ID
 from libs.YbProtocol import YbProtocol
-from yahboom.ybUtils.YbUart import YbUart
+from ybUtils.YbUart import YbUart
 uart = None
 pto = YbProtocol()
 # Import touch sensor module

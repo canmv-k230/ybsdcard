@@ -1,5 +1,5 @@
 import lvgl as lv
-from yahboom.ybMain.base_app import BaseApp
+from ybMain.base_app import BaseApp
 
 import sys, os, gc, _thread
 

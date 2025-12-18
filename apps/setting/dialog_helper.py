@@ -1,6 +1,6 @@
 import lvgl as lv
-from yahboom.ybUtils.Configuration import Configuration
-from yahboom.ybUtils.KeyBoardManager import KeyboardManager
+from ybUtils.Configuration import Configuration
+from ybUtils.KeyBoardManager import KeyboardManager
 
 class DialogHelper:
     def __init__(self, screen, text_config=None):

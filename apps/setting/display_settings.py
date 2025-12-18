@@ -1,7 +1,7 @@
 from apps.setting.base_setting_page import BaseSettingPage
 import lvgl as lv
 import machine
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 
 class DisplaySettingsPage(BaseSettingPage):
     

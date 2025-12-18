@@ -1,6 +1,6 @@
 from apps.setting.base_setting_page import BaseSettingPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import Configuration
+from ybUtils.Configuration import Configuration
 class PersonalizationSettingsPage(BaseSettingPage):
     def __init__(self, app, detail_panel, config, text_config):
         super().__init__(app, detail_panel, config)

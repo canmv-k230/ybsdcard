@@ -1,6 +1,6 @@
 from apps.ai_objects.base_demo_page import BaseDemoPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import apps.ai_objects.car_license_plate_recog.car_license_plate_recognition as car_license_plate_recognition
 from media.display import *
 from media.media import *

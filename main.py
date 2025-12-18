@@ -1,5 +1,5 @@
 import time
-from yahboom.ybUtils.YbKey import YbKey
+from ybUtils.YbKey import YbKey
 key = YbKey()
 abort_main = 0
 if key.is_pressed():
@@ -9,5 +9,5 @@ if key.is_pressed():
 
 
 if not abort_main:
-    from yahboom.ybMain.main import *
+    from ybMain.main import *
     start()

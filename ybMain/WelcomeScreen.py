@@ -3,7 +3,7 @@ from media.media import *
 import time, os, sys, gc
 import lvgl as lv
 from machine import TOUCH
-from yahboom.ybUtils.Configuration import Configuration
+from ybUtils.Configuration import Configuration
 
 # DISPLAY_WIDTH = ALIGN_UP(800, 16)
 DISPLAY_WIDTH = ALIGN_UP(640, 16)

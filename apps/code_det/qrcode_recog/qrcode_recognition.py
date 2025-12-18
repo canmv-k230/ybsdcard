@@ -6,7 +6,7 @@ from media.sensor import *
 from media.display import *
 from media.media import *
 from libs.YbProtocol import YbProtocol
-from yahboom.ybUtils.YbUart import YbUart
+from ybUtils.YbUart import YbUart
 uart = None
 # uart = YbUart(baudrate=115200)
 pto = YbProtocol()

@@ -1,6 +1,6 @@
 from apps.color_det.base_demo_page import BaseDemoPage
 import lvgl as lv
-from yahboom.ybUtils.Configuration import *
+from ybUtils.Configuration import *
 import apps.color_det.multi_color_recog.recog as multi_color_recogection
 from media.display import *
 from media.media import *

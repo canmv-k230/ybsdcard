@@ -1,7 +1,7 @@
 from apps.setting.base_setting_page import BaseSettingPage
 import lvgl as lv
-from yahboom.ybUtils.YbNetwork import YbNetwork
-from yahboom.ybUtils.Configuration import *
+from ybUtils.YbNetwork import YbNetwork
+from ybUtils.Configuration import *
 
 class WiFiSettingsPage(BaseSettingPage):
     def __init__(self, app, detail_panel, config, text_config):

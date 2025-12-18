@@ -1,8 +1,8 @@
 from apps.setting.base_setting_page import BaseSettingPage
 import lvgl as lv
 import os
-from yahboom.ybUtils.Configuration import *
-import yahboom.ybUtils.monitor
+from ybUtils.Configuration import *
+import ybUtils.monitor
 # 暂时不需要
 class MoreSettingsPage(BaseSettingPage):
     def __init__(self, app, detail_panel, config, text_config):

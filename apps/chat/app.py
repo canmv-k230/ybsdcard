@@ -1,6 +1,6 @@
 import lvgl as lv
-from yahboom.ybMain.base_app import BaseApp
-from yahboom.ybUtils.Configuration import Configuration
+from ybMain.base_app import BaseApp
+from ybUtils.Configuration import Configuration
 
 from media.display import *
 from media.media import *
@@ -8,10 +8,10 @@ import time, os, sys, gc
 import lvgl as lv
 from machine import TOUCH
 import json
-# from yahboom.ybUtils.spark_chat import *
-from yahboom.ybUtils.LLM import LLM
+# from ybUtils.spark_chat import *
+from ybUtils.LLM import LLM
 import _thread
-from yahboom.ybUtils.KeyBoardManager import KeyboardManager
+from ybUtils.KeyBoardManager import KeyboardManager
 
 DISPLAY_WIDTH = ALIGN_UP(640, 16)
 DISPLAY_HEIGHT = 480
