@@ -17,7 +17,7 @@ tp = TOUCH(0)
 # Define display resolution constants
 # 定义显示分辨率常量
 DISPLAY_WIDTH = 640
-DISPLAY_HEIGHT = 432
+DISPLAY_HEIGHT = 480
 
 def display_test():
     """
@@ -27,20 +27,26 @@ def display_test():
 
     # Create main background image with white color
     # 创建白色背景的主图像
-    img = image.Image(DISPLAY_WIDTH, DISPLAY_HEIGHT, image.ARGB8888)
-    img.clear()
-    img.draw_rectangle(0, 50, DISPLAY_WIDTH, DISPLAY_HEIGHT,color=(255,255,255),fill=True)
+    # img = image.Image(DISPLAY_WIDTH, 480, image.ARGB8888)
+    # img.clear()
+
 
     # Create secondary image for drawing
     # 创建用于绘画的次要图像
     img2 = image.Image(DISPLAY_WIDTH, DISPLAY_HEIGHT, image.ARGB8888)
     img2.clear()
+    img2.draw_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT,color=(255,255,255),fill=True)
+    img2.draw_line(20, 30, 50, 30, color=(33, 37, 43), thickness=4)
+    img2.draw_line(20, 30, 35, 15, color=(33, 37, 43), thickness=4)
+    img2.draw_line(20, 30, 35, 45, color=(33, 37, 43), thickness=4)
+    Display.show_image(img2,0,0,Display.LAYER_OSD3)
 
     try:
         # Variables to store previous touch coordinates
         # 存储上一次触摸坐标的变量
         last_x = None
         last_y = None
+        count = 0
         while True:
             # Read touch point data
             # 读取触摸点数据
@@ -50,20 +56,28 @@ def display_test():
                 pt = point[0]
                 # Handle touch events (down or move)
                 # 处理触摸事件（按下或移动）
-                if pt.event == 0 or pt.event == TOUCH.EVENT_DOWN or pt.event == TOUCH.EVENT_MOVE:
+                # print("pt:", pt.x, pt.y, pt.event)
+                if pt.event == 0 or pt.event == TOUCH.EVENT_UP or pt.event == TOUCH.EVENT_DOWN : # or pt.event == TOUCH.EVENT_MOVE
                     if pt.x<60 and pt.y<60:
                         time.sleep_ms(1)
                         break
-                    if((last_x is not None) and (last_y is not None) and pt.event is not 2):
+                    if((last_x is not None) and (last_y is not None)): # and pt.event is not 2
                         # Draw line between previous and current touch points
                         # 在上一个触摸点和当前触摸点之间画线
                         img2.draw_line(last_x,last_y,pt.x, pt.y, color=(0,0,0), thickness = 5)
-                        Display.show_image(img2,0,50,Display.LAYER_OSD3)
+                        count = 0
+                        # print("draw line")
+                        Display.show_image(img2,0,0,Display.LAYER_OSD3)
                     last_x = pt.x
                     last_y = pt.y
+            else:
+                count = count + 1
+                if count > 50:
+                    last_x = None
+                    last_y = None
             # Update display with background image
             # 更新显示背景图像
-            Display.show_image(img,0,50,Display.LAYER_OSD2)
+            # Display.show_image(img,0,50,Display.LAYER_OSD2)
             time.sleep_us(1)
     except BaseException as e:
         print(f"Exception {e}")
@@ -71,7 +85,7 @@ def display_test():
         img2 = image.Image(640, 480, image.RGB565)
         img2.clear()
         Display.show_image(img2, 0, 0, Display.LAYER_OSD3)
-        Display.show_image(img2, 0, 0, Display.LAYER_OSD2)
+        # Display.show_image(img2, 0, 0, Display.LAYER_OSD2)
         # 多次执行gc回收
         gc.collect()
         time.sleep(0.1)  # 给系统一点时间清理
