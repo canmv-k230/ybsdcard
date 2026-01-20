@@ -53,6 +53,10 @@ class LicenceDetectionApp(AIBase):
         # 初始化AI2D实例用于图像预处理 Initialize AI2D instance for image preprocessing
         self.ai2d = Ai2d(debug_mode)
         self.ai2d.set_ai2d_dtype(nn.ai2d_format.NCHW_FMT, nn.ai2d_format.NCHW_FMT, np.uint8, np.uint8)
+        self.crop_x = 0
+        self.crop_y = 0
+        self.crop_w = 0
+        self.crop_h = 0
 
     def config_preprocess(self, input_image_size=None):
         """
@@ -60,7 +64,19 @@ class LicenceDetectionApp(AIBase):
         """
         with ScopedTiming("set preprocess config", self.debug_mode > 0):
             ai2d_input_size = input_image_size if input_image_size else self.rgb888p_size
-            # 配置双线性插值方法 Configure bilinear interpolation method
+            
+            # 计算 Center Crop 参数，保持 1:1 比例输入给模型，避免拉伸变形
+            # Calculate Center Crop parameters to keep 1:1 aspect ratio for model input, avoiding stretching
+            w = ai2d_input_size[0]
+            h = ai2d_input_size[1]
+            crop_size = min(w, h)
+            self.crop_w = crop_size
+            self.crop_h = crop_size
+            self.crop_x = (w - crop_size) // 2
+            self.crop_y = (h - crop_size) // 2
+            
+            # 配置 Crop 和 Resize
+            self.ai2d.crop(self.crop_x, self.crop_y, self.crop_w, self.crop_h)
             self.ai2d.resize(nn.interp_method.tf_bilinear, nn.interp_mode.half_pixel)
             self.ai2d.build([1,3,ai2d_input_size[1],ai2d_input_size[0]],[1,3,self.model_input_size[1],self.model_input_size[0]])
 
@@ -70,11 +86,20 @@ class LicenceDetectionApp(AIBase):
         对模型输出结果进行处理 Process model output results
         """
         with ScopedTiming("postprocess", self.debug_mode > 0):
+            # 传入 Crop 后的尺寸，让 aidemo 计算出相对于 Crop 区域的坐标
             det_res = aidemo.licence_det_postprocess(results, 
-                                                   [self.rgb888p_size[1], self.rgb888p_size[0]], 
+                                                   [self.crop_h, self.crop_w], 
                                                    self.model_input_size, 
                                                    self.confidence_threshold, 
                                                    self.nms_threshold)
+            
+            # 将坐标还原为相对于原图 (Input Image) 的坐标
+            if det_res:
+                for i in range(len(det_res)):
+                    for j in range(4):
+                        det_res[i][j * 2 + 0] += self.crop_x
+                        det_res[i][j * 2 + 1] += self.crop_y
+            
             return det_res
 
     def draw_result(self, pl, dets):
@@ -91,6 +116,7 @@ class LicenceDetectionApp(AIBase):
                 for det in dets:
                     # 坐标转换 Coordinate conversion
                     for i in range(4):
+                        # 此时 det 已经是相对于原图的坐标了，直接映射到显示屏幕坐标
                         x = det[i * 2 + 0] / self.rgb888p_size[0] * self.display_size[0]
                         y = det[i * 2 + 1] / self.rgb888p_size[1] * self.display_size[1]
                         point_8[i * 2 + 0] = int(x)
