@@ -56,7 +56,7 @@
         },
         "face_recog_register": {
             "title": "Face Registration",
-            "info": "This example is used to register faces for recognition:\nPlease place the faces to be recognized in the [/data/face_register/] directory\nThen click the train button, K230 will start training face data\nThe trained face data will be saved to the [/data/face_database/] directory.\n ** The above paths are default save paths, you can adjust path information in the configuration file",
+            "info": "This example is used to register faces for recognition:\nPlease place the faces to be recognized in the [/data/face_register/] directory\nThen click the Boot button, K230 will start training face data\nThe trained face data will be saved to the [/data/face_database/] directory.\n ** The above paths are default save paths, you can adjust path information in the configuration file",
             "modal_info": "Confirm to start scanning and registering face data?\n[Click OK button, buzzer sounds to indicate training start, screen cannot be operated during this time, after training ends the buzzer will sound twice more, screen returns to normal]\n About to register the following faces: ",
             "modal_error": "An error occurred while reading face data: \n",
             "modal_error_no_data": "No face data found, please confirm there are face photos in the current set directory and files are named with person's name",
