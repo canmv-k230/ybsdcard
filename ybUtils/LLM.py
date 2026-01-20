@@ -197,3 +197,76 @@ class LLM:
             error_msg = f"请求错误: {str(e)}"
             print(f"[DEBUG] {error_msg}")
             return {"error": {"message": error_msg, "type": "request_error"}}
+
+# 使用示例
+def simple_chat_example(api_key, prompt, model_type=LLM.MODEL_TYPE_SPARK, model=None, stream=False, chat_history=None):
+    """
+    简单的聊天示例,支持对话历史
+    
+    参数:
+        api_key (str): API密钥
+        prompt (str): 用户输入的提示语
+        model_type (str): 模型类型，默认为Spark
+        model (str): 具体使用的模型
+        stream (bool): 是否使用流式响应
+        chat_history (list): 对话历史记录,格式为[(content, is_user), ...]
+    """
+    print(f"[DEBUG] 开始聊天示例 - 模型类型: {model_type}, 模型: {model}")
+    
+    # 构建消息列表
+    messages = []
+    
+    # 如果有对话历史,添加到消息列表中
+    if chat_history:
+        total_length = 0
+        max_length = 300  # 限制总长度
+        
+        for content, is_user in chat_history:
+            
+            msg_length = len(content)
+            if total_length + msg_length > max_length:
+                break
+                
+            messages.append({
+                "role": "user" if is_user else "assistant",
+                "content": content
+            })
+            total_length += msg_length
+    
+    # 添加当前用户输入
+    messages.append({"role": "user", "content": prompt})
+    
+    try:
+        # 创建LLM实例并发送请求
+        llm = LLM(api_key, model_type)
+        response = llm.chat(messages, model=model, max_tokens=512)
+        # 处理响应
+        if "error" in response:
+            return f"ERROR: {response['error']}"
+        
+        elif "choices" in response and len(response["choices"]) > 0:
+            content = response["choices"][0].get("message", {}).get("content", "")
+            
+            # 如果回复过长,进行截断
+            if len(content) >= 124:
+                content = f"{content[:124]} ..... "
+                
+            print(f"回复: {content}")
+            
+            # 显示token使用情况
+            if "usage" in response:
+                usage = response["usage"]
+                print("\n使用的token: {} (输入: {}, 输出: {})".format(
+                    usage.get('total_tokens', 0),
+                    usage.get('prompt_tokens', 0),
+                    usage.get('completion_tokens', 0)
+                ))
+            
+            return content
+            
+        else:
+            return "error: 无效的响应格式"
+            
+    except Exception as e:
+        print(f"[ERROR] 发生错误: {str(e)}")
+        return "sorry, some error happened"
