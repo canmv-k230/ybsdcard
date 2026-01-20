@@ -143,7 +143,7 @@ class BaseApp:
         anim.init()
         anim.set_var(self.title_bar)
         anim.set_values(0, 255)
-        anim.set_time(200)
+        anim.set_time(0)
         anim.set_path_cb(lv.anim_t.path_ease_out)
         anim.set_custom_exec_cb(lambda a, val: self._set_title_opacity(val))
         anim.set_ready_cb(self._on_anim_ready_2)
@@ -272,12 +272,12 @@ class BaseApp:
             anim = lv.anim_t()
             anim.init()
             anim.set_var(self.screen)
-            anim.set_time(10)  # 速度更快，更流畅
+            anim.set_time(0)  # 速度更快，更流畅
             anim.set_values(current_y, 100)
             anim.set_path_cb(lv.anim_t.path_ease_in)
             
-            # 使用更简单的内置动画设置函数减少函数调用开销
-            anim.set_exec_cb(lambda obj, y: obj.set_y(y))
+            # 使用 set_custom_exec_cb 替代 set_exec_cb，因为 Python 回调需要用 custom
+            anim.set_custom_exec_cb(lambda a, y: self.screen.set_y(y))
             anim.set_ready_cb(self._on_close_anim_ready)
             
             debug_print(f"[_close_with_animation] Y坐标动画: {current_y} -> 100")

@@ -184,7 +184,7 @@ def create_black_frosted_style():
     style_black_frosted.set_bg_color(lv.color_make(20, 20, 20))  # 深黑色
 
     # 设置背景透明度，用于模拟磨砂效果
-    style_black_frosted.set_bg_opa(230)  # 约90%的不透明度
+    # style_black_frosted.set_bg_opa(255)  # 约90%的不透明度
 
     # 设置背景渐变效果，增强质感
     style_black_frosted.set_bg_grad_color(lv.color_make(40, 40, 40))  # 稍微亮一点的黑色
@@ -443,6 +443,16 @@ class AppManager:
             self.gesture_layer.add_event(self.on_gesture_press, lv.EVENT.PRESSED, None)
             self.gesture_layer.add_event(self.on_gesture_release, lv.EVENT.RELEASED, None)
 
+            # 创建应用容器，用于存放图标，方便切换页面时统一清除
+            self.app_container = lv.obj(self.home_screen)
+            self.app_container.set_size(lv.pct(100), lv.pct(100))
+            self.app_container.set_pos(0, 0)
+            self.app_container.set_style_bg_opa(0, 0)  # 完全透明
+            self.app_container.set_style_border_width(0, 0)  # 无边框
+            self.app_container.set_style_pad_all(0, 0)  # 无内边距
+            self.app_container.clear_flag(lv.obj.FLAG.CLICKABLE) # 允许点击穿透，图标自己会响应
+            self.app_container.set_scrollbar_mode(lv.SCROLLBAR_MODE.OFF) # 禁用滚动条
+
             # 创建页面指示器 - YAHBOOM K230 STYLE圆点
             self.page_indicator = lv.obj(self.home_screen)
             self.page_indicator.set_size(120, 30)
@@ -561,6 +571,13 @@ class AppManager:
             def y_cb(obj, value):
                 self.lock_screen.set_y(value)
             anim.set_custom_exec_cb(lambda a,val: y_cb(self.lock_screen,val))
+            
+            # 设置动画结束回调，强制刷新以避免残留
+            def anim_open_ready_cb(anim):
+                self.lock_screen.invalidate()
+                lv.refr_now(None)
+            anim.set_ready_cb(anim_open_ready_cb)
+
             # 启动动画
             anim.start()
         except Exception as e:
@@ -573,7 +590,7 @@ class AppManager:
             anim.init()
             anim.set_var(self.lock_screen)
             anim.set_values(0, -470)  # 从当前位置(0)移动到屏幕底部(480)
-            anim.set_time(300)  # 动画持续时间300ms
+            anim.set_time(0)  # 动画持续时间300ms
             anim.set_path_cb(lv.anim_t.path_ease_in)  # 添加缓动效果
             m = gc.sys_heap()
 
@@ -587,6 +604,9 @@ class AppManager:
             def anim_ready_cb(anim):
                 self.status_label.set_text(f"CPU: -- %   |   Mem: -- %")
                 self.lock_screen.delete()
+                self.lock_screen = None
+                self.home_screen.invalidate()
+                lv.refr_now(None)
 
             anim.set_ready_cb(anim_ready_cb)
 
@@ -646,10 +666,19 @@ class AppManager:
                 if abs(delta_x) >= abs(delta_y):
                     if abs(delta_x) > self.min_swipe_distance:
                         if delta_x > 0:
-                            self.change_page(max(1, self.current_page - 1))
+                            # 向右滑动，切换到上一页
+                            if self.current_page == 1:
+                                # 如果在第一页向右滑，循环到最后一页
+                                self.change_page(self.page_count)
+                            else:
+                                self.change_page(self.current_page - 1)
                         else:
                             # 向左滑动，切换到下一页
-                            self.change_page(min(self.page_count, self.current_page + 1))
+                            if self.current_page == self.page_count:
+                                # 如果在最后一页向左滑，循环到第一页
+                                self.change_page(1)
+                            else:
+                                self.change_page(self.current_page + 1)
                 else:
                     if abs(delta_y) > (self.min_swipe_distance):
                         if delta_y > 0:
@@ -817,8 +846,8 @@ class AppManager:
             icon_x = self.grid_start_x + col * (self.icon_size + self.icon_spacing_x)
             icon_y = self.grid_start_y + row * (self.icon_size + self.icon_spacing_y)
 
-            # 创建图标 - 直接放在主屏幕上
-            icon = lv.btn(self.home_screen)
+            # 创建图标 - 直接放在应用容器中
+            icon = lv.btn(self.app_container)
             icon.set_size(0, 0)  # 初始大小设为0用于动画
             icon.set_pos(icon_x + self.icon_size // 2, icon_y + self.icon_size // 2)  # 从中心点开始
             icon.set_style_radius(18, 0)  # YAHBOOM K230 STYLE圆角矩形图标
@@ -865,7 +894,7 @@ class AppManager:
             app.icon_btn = icon
 
             # 创建标签但初始设为透明
-            label = lv.label(self.home_screen)
+            label = lv.label(self.app_container)
             label.set_text(app.name)
             label.set_style_text_color(lv.color_hex(0xFFFFFF), 0)
             label.set_style_text_font(self.font_16, 0)
@@ -883,7 +912,7 @@ class AppManager:
             label.set_style_opa(0, 0)
 
             # 计算动画延迟，根据图标位置稍微错开动画时间，创造波浪效果
-            delay_ms = (row * self.icons_per_row + col) * 20  # 减少动画总时间以提高响应性
+            delay_ms = 0  # 减少动画总时间以提高响应性
 
             # 1. 图标大小动画（从0到最终大小）
             size_anim = lv.anim_t()
@@ -910,7 +939,7 @@ class AppManager:
             opa_anim.init()
             opa_anim.set_var(icon)
             opa_anim.set_values(0, 255)
-            opa_anim.set_time(20)  # 减少动画时间
+            opa_anim.set_time(0)  # 减少动画时间
             opa_anim.set_delay(delay_ms)
             opa_anim.set_path_cb(lv.anim_t.path_ease_out)
             opa_anim.set_custom_exec_cb(lambda a, val: icon.set_style_opa(val, 0))
@@ -921,8 +950,8 @@ class AppManager:
             label_anim.init()
             label_anim.set_var(label)
             label_anim.set_values(0, 255)
-            label_anim.set_time(20)  # 减少动画时间
-            label_anim.set_delay(delay_ms + 50)
+            label_anim.set_time(0)  # 减少动画时间
+            label_anim.set_delay(delay_ms)
             label_anim.set_path_cb(lv.anim_t.path_ease_out)
             label_anim.set_custom_exec_cb(lambda a, val: label.set_style_opa(val, 0))
             label_anim.start()
@@ -1004,25 +1033,18 @@ class AppManager:
                 return
 
             self.change_page_lock = True
-            self.page_timer.init(mode=Timer.ONE_SHOT, period=600, callback=self.release_change_page_lock)
+            self.page_timer.init(mode=Timer.ONE_SHOT, period=100, callback=self.release_change_page_lock)
 
             if 0 < page_number <= self.page_count and page_number != self.current_page:
                 old_page = self.current_page
                 self.current_page = page_number
 
                 # 移除旧页面的所有图标和标签
-                # 搜索并删除当前主屏幕上的所有应用图标和标签
-                children = self.home_screen.get_child_cnt()
-                for i in range(children-1, -1, -1):
-                    child = self.home_screen.get_child(i)
-                    # 避免删除状态栏、Dock栏等UI元素
-                    if child != self.status_bar and child != self.dock and child != self.page_indicator and child != self.gesture_layer:
-                        # 检查是否在应用网格区域内
-                        x, y = child.get_x(), child.get_y()
-                        if y >= self.grid_start_y and y < (self.grid_start_y + self.rows_per_page * (self.icon_size + self.icon_spacing_y)):
-                            # 在删除前停止所有与该对象相关的动画
-                            lv.anim_del(child, None)  # 删除该对象上的所有动画
-                            child.delete()
+                # 直接清空应用容器
+                self.app_container.clean()
+                self.home_screen.invalidate()
+                # 强制刷新一次以确保旧内容被清除
+                lv.refr_now(None)
 
                 # 创建新页面的图标
                 app_keys = list(self.apps.keys())
