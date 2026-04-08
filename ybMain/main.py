@@ -87,11 +87,10 @@ def disp_drv_flush_cb(disp_drv, area, color):
     global disp_img1, disp_img2
 
     try:
-        if disp_drv.flush_is_last() == True:
-            if disp_img1.virtaddr() == uctypes.addressof(color.__dereference__()):
-                Display.show_image(disp_img1)
-            else:
-                Display.show_image(disp_img2)
+        if disp_img1.virtaddr() == uctypes.addressof(color.__dereference__()):
+            Display.show_image(disp_img1, 0, 0, Display.LAYER_OSD3)
+        else:
+            Display.show_image(disp_img2, 0, 0, Display.LAYER_OSD3)
         disp_drv.flush_ready()
     except Exception as e:
         debug_print("disp_drv_flush_cb", e)
@@ -127,7 +126,7 @@ def lvgl_init():
     disp_img1 = image.Image(DISPLAY_WIDTH, DISPLAY_HEIGHT, image.BGRA8888)
     disp_img2 = image.Image(DISPLAY_WIDTH, DISPLAY_HEIGHT, image.BGRA8888)
 
-    disp_drv.set_draw_buffers(disp_img1.bytearray(), disp_img2.bytearray(), disp_img1.size()*5, lv.DISP_RENDER_MODE.FULL)
+    disp_drv.set_draw_buffers(disp_img1.bytearray(), disp_img2.bytearray(), disp_img1.size(), lv.DISP_RENDER_MODE.FULL)
 
     global_touch_dev = touch_screen()
 
@@ -1320,7 +1319,7 @@ def main():
         gc_counter = 0
 
         while True:
-            refresh_time = lv.task_handler()
+            refresh_time = lv.timer_handler_run_in_period(1)
             time.sleep_ms(max(refresh_time, 10))  # 确保至少有10ms的间隔
 
             # 优化垃圾回收

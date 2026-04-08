@@ -95,7 +95,7 @@ class BaseDemoPage:
                 pass
             finally:
                 # img2 = image.Image(640, 480, image.RGB565)
-                img2 = image.Image(640, 480, image.RGB565)
+                img2 = image.Image(640, 480, image.ARGB8888)
                 img2.clear()
                 Display.show_image(img2, 0, 0, Display.LAYER_OSD3)
                 

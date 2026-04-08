@@ -53,7 +53,7 @@ class SFLPage(BaseDemoPage):
         
     def on_fully_mode(self, modal):
         # img2 = image.Image(640, 480, image.RGB565)
-        img2 = image.Image(640, 480, image.RGB565)
+        img2 = image.Image(640, 480, image.ARGB8888)
         img2.clear()
         # 绘制返回箭头的水平线
         img2.draw_line(20, 30, 50, 30, color=(255, 255, 255), thickness=4)
@@ -81,7 +81,7 @@ class SFLPage(BaseDemoPage):
                     height=300
                 )
             finally:
-                img2 = image.Image(640, 480, image.RGB565)
+                img2 = image.Image(640, 480, image.ARGB8888)
                 img2.clear()
                 Display.show_image(img2, 0, 0, Display.LAYER_OSD3)
                 
@@ -94,7 +94,7 @@ class SFLPage(BaseDemoPage):
                 time.sleep(0.1)  # 给系统一点时间清理
                 gc.collect()
     def on_recog_only_mode(self, modal):
-        img2 = image.Image(640, 480, image.RGB565)
+        img2 = image.Image(640, 480, image.ARGB8888)
         img2.clear()
         # 绘制返回箭头的水平线
         img2.draw_line(20, 30, 50, 30, color=(255, 255, 255), thickness=4)
@@ -122,7 +122,7 @@ class SFLPage(BaseDemoPage):
                     height=300
                 )
             finally:
-                img2 = image.Image(640, 480, image.RGB565)
+                img2 = image.Image(640, 480, image.ARGB8888)
                 img2.clear()
                 Display.show_image(img2, 0, 0, Display.LAYER_OSD3)
                 

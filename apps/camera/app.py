@@ -150,22 +150,17 @@ class App(BaseApp):
 
     def open_camera(self, event):
         gc.collect()
-        img2 = image.Image(640, 480, image.RGB565)
+        # 清除 OSD0（不再用于 UI，新固件中 OSD3 在 OSD0 上方）
+        img2 = image.Image(640, 480, image.ARGB8888)
         img2.clear()
+        Display.show_image(img2, 0, 0, Display.LAYER_OSD0)
+        del img2
 
         screen_height = 480
         button_x = 580
         button_y = screen_height // 2
         button_radius = 30
 
-        img2.draw_circle(button_x, button_y, button_radius, color=(255, 255, 255), thickness=3)
-        img2.draw_circle(button_x, button_y, button_radius - 5, color=(255, 255, 255), thickness=3, fill=True)
-        img2.draw_line(20, 30, 50, 30, color=(255, 255, 255), thickness=4)
-        img2.draw_line(20, 30, 35, 15, color=(255, 255, 255), thickness=4)
-        img2.draw_line(20, 30, 35, 45, color=(255, 255, 255), thickness=4)
-        
-        Display.show_image(img2, 0, 0, Display.LAYER_OSD0)
-        
         img = None
         while True:
             point = tp.read(1)
@@ -184,7 +179,12 @@ class App(BaseApp):
                         break
             
             img = self.pl.sensor.snapshot(chn=CAM_CHN_ID_1)
-            
+            # 将 UI 元素直接绘制在摄像头帧上（OSD3 在上层，OSD0 已被遮挡）
+            img.draw_circle(button_x, button_y, button_radius, color=(255, 255, 255), thickness=3)
+            img.draw_circle(button_x, button_y, button_radius - 5, color=(255, 255, 255), thickness=3, fill=True)
+            img.draw_line(20, 30, 50, 30, color=(255, 255, 255), thickness=4)
+            img.draw_line(20, 30, 35, 15, color=(255, 255, 255), thickness=4)
+            img.draw_line(20, 30, 35, 45, color=(255, 255, 255), thickness=4)
             Display.show_image(img, 0, 0, Display.LAYER_OSD3)
             
             time.sleep_ms(10)
@@ -197,7 +197,7 @@ class App(BaseApp):
         time.sleep_ms(2)
 
     def deinitialize(self):
-        img2 = image.Image(640, 480, image.RGB565)
+        img2 = image.Image(640, 480, image.ARGB8888)
         img2.clear()
         Display.show_image(img2, 0, 0, Display.LAYER_OSD3)
 

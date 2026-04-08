@@ -34,7 +34,7 @@ class CLPRPage(BaseDemoPage):
     
     def on_button_click(self, evt):
         # img2 = image.Image(640, 480, image.RGB565)
-        img2 = image.Image(640, 480, image.RGB565)
+        img2 = image.Image(640, 480, image.ARGB8888)
         img2.clear()
         # 绘制返回箭头的水平线
         img2.draw_line(20, 30, 50, 30, color=(255, 255, 255), thickness=4)
